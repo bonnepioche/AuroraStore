@@ -45,6 +45,14 @@
     <string name="account_add">Add account</string>
     <string name="account_add_device">Device accounts</string>
     <string name="account_add_google">Sign in with Google</string>
+    <string name="aas_login_action">Google account (AAS token)</string>
+    <string name="aas_login_title">Sign in with AAS token</string>
+    <string name="aas_login_email">Google account email</string>
+    <string name="aas_login_token">AAS token</string>
+    <string name="aas_login_submit">Connect to Google Play</string>
+    <string name="aas_login_helper">Enter the AAS token already obtained with apkeep. Keep it private: it grants access to your Google account session.</string>
+    <string name="aas_login_invalid">Enter a valid email address and a non-empty AAS token.</string>
+    <string name="aas_login_failed">Google Play rejected the token or could not establish a session. Check the account, device profile and network.</string>
     <string name="account_add_anonymous">Add anonymous account</string>
     <string name="account_set_default_title">Switch default account?</string>
     <string name="account_set_default_message">Aurora Store will restart to use the new default account.</string>
