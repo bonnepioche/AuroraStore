@@ -259,6 +259,10 @@ class UpdateHelper @Inject constructor(
     private suspend fun deleteInvalidUpdates() {
         updateDao.updates().firstOrNull()?.forEach { update ->
             if (update.isSelfUpdate(context)) {
+                if (!PackageUtil.isSelfUpdateSupported(context)) {
+                    deleteUpdate(update.packageName)
+                    return@forEach
+                }
                 // Self-updates need a flavor-aware staleness check. Release/preload bump the
                 // version code, so the normal up-to-date check works. Nightly reuses a static
                 // version code (isUpToDate is always true there), so fall back to the

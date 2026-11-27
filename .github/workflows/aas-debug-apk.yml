@@ -37,6 +37,6 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: AuroraStore-AAS-v0.2-unsigned
+          name: AuroraStore-AAS-v0.3-unsigned
           path: app/build/outputs/apk/vanilla/release/*-unsigned.apk
           if-no-files-found: error

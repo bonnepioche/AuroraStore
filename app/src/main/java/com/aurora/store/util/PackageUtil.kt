@@ -192,6 +192,8 @@ object PackageUtil {
      * flavor check. The user-facing toggle gates this further at runtime.
      */
     fun isSelfUpdateSupported(context: Context): Boolean {
+        // This fork is updated only with locally signed releases.
+        if (BuildConfig.APPLICATION_ID.startsWith("com.bonnepioche.aurorastore")) return false
         val flavorEligible = BuildConfig.FLAVOR == FLAVOUR_VANILLA ||
             BuildConfig.FLAVOR == FLAVOUR_PRELOAD
         return flavorEligible &&
