@@ -273,6 +273,13 @@ fun SplashScreen(
                         ) {
                             Text(stringResource(R.string.account_google))
                         }
+                        OutlinedButton(
+                            modifier = Modifier.width(dimensionResource(R.dimen.width_button)),
+                            enabled = !googleLoading && !anonymousLoading && isOnline,
+                            onClick = { onNavigateTo(Destination.AasTokenLogin()) }
+                        ) {
+                            Text(stringResource(R.string.aas_login_action))
+                        }
                         if (BuildConfig.SHOW_ANONYMOUS_LOGIN) {
                             OutlinedButton(
                                 modifier = Modifier.width(dimensionResource(R.dimen.width_button)),
