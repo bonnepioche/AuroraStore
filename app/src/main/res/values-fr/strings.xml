@@ -588,6 +588,14 @@
     <string name="account_remove_last_message">Il s’agit de votre seul compte. Le supprimer vous déconnectera et vous ne pourrez plus utiliser le magasin Aurora Store avant de vous reconnecter.</string>
     <string name="account_add">Ajouter un compte</string>
     <string name="account_add_device">Comptes d’appareil</string>
+    <string name="aas_login_action">Compte Google (jeton AAS)</string>
+    <string name="aas_login_title">Connexion avec jeton AAS</string>
+    <string name="aas_login_email">Adresse du compte Google</string>
+    <string name="aas_login_token">Jeton AAS</string>
+    <string name="aas_login_submit">Se connecter à Google Play</string>
+    <string name="aas_login_helper">Saisissez le jeton AAS déjà obtenu avec apkeep. Gardez-le confidentiel : il donne accès à votre session Google.</string>
+    <string name="aas_login_invalid">Saisissez une adresse e-mail valide et un jeton AAS non vide.</string>
+    <string name="aas_login_failed">Google Play a refusé le jeton ou n\'a pas pu établir de session. Vérifiez le compte, le profil matériel et la connexion.</string>
     <string name="account_add_google">Se connecter avec Google</string>
     <string name="account_add_anonymous">Ajouter un compte anonyme</string>
     <string name="account_set_default_title">Changer de compte par défaut ?</string>

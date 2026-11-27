@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
@@ -92,7 +93,9 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 verifyAndSaveAuth(
-                    authProvider.buildGoogleAuthData(email, token, tokenType).getOrThrow(),
+                    withTimeout(45_000L) {
+                        authProvider.buildGoogleAuthData(email, token, tokenType).getOrThrow()
+                    },
                     AccountType.GOOGLE
                 )
             } catch (exception: Exception) {
@@ -112,9 +115,9 @@ class AuthViewModel @Inject constructor(
     fun addGoogleAuthData(email: String, token: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = runCatching {
-                val authData = authProvider
-                    .buildGoogleAuthData(email, token, TokenType.AAS)
-                    .getOrThrow()
+                val authData = withTimeout(45_000L) {
+                    authProvider.buildGoogleAuthData(email, token, TokenType.AAS).getOrThrow()
+                }
                 require(authData.authToken.isNotEmpty() && authData.deviceConfigToken.isNotEmpty())
                 authProvider.persistAccount(
                     authData = authData,

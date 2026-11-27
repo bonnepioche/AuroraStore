@@ -336,6 +336,15 @@ fun AccountsScreen(
                     }
                 )
 
+                AddOptionRow(
+                    iconRes = R.drawable.ic_account,
+                    label = stringResource(R.string.aas_login_action),
+                    onClick = {
+                        showAddSheet = false
+                        onNavigateTo(Destination.AasTokenLogin(addAccount = true))
+                    }
+                )
+
                 if (BuildConfig.SHOW_ANONYMOUS_LOGIN && accounts.none { it.isAnonymous }) {
                     AddOptionRow(
                         iconRes = R.drawable.ic_anonymous,
