@@ -33,6 +33,21 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew :app:testVanillaDebugUnitTest :app:assembleVanillaRelease --no-daemon --stacktrace
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Android Keystore instrumentation tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          script: ./gradlew :app:connectedVanillaDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.aurora.store.util.CredentialCipherTest --no-daemon --stacktrace
+      - name: APK SHA-256
+        run: sha256sum app/build/outputs/apk/vanilla/release/*-unsigned.apk
       - name: Upload APK
         if: success()
         uses: actions/upload-artifact@v4

@@ -181,7 +181,7 @@ class DownloadWorker @AssistedInject constructor(
             )
             icon = bitmap?.scale(96, 96)
         } catch (exception: Exception) {
-            Log.w(TAG, "Failed to fetch icon for ${download.packageName}", exception)
+            Log.w(TAG, "Failed to fetch icon for ${download.packageName}: ${exception.javaClass.simpleName}")
         }
 
         // Set work/service to foreground on < Android 12.0
@@ -251,10 +251,10 @@ class DownloadWorker @AssistedInject constructor(
         } catch (exception: CancellationException) {
             throw exception
         } catch (exception: Exception) {
-            Log.w(TAG, "Failed to plan patches for ${download.packageName}", exception)
+            Log.w(TAG, "Failed to plan patches for ${download.packageName}: ${exception.javaClass.simpleName}")
             mutableMapOf()
         } catch (error: LinkageError) {
-            Log.w(TAG, "Failed to plan patches for ${download.packageName}", error)
+            Log.w(TAG, "Failed to plan patches for ${download.packageName}: ${error.javaClass.simpleName}")
             mutableMapOf()
         }
 
@@ -336,7 +336,7 @@ class DownloadWorker @AssistedInject constructor(
                 require(result != FrostingVerifier.Result.INVALID)
             }
         } catch (exception: Exception) {
-            Log.e(TAG, "Failed to verify ${download.packageName}", exception)
+            Log.e(TAG, "Failed to verify ${download.packageName}: ${exception.javaClass.simpleName}")
             // Drop the corrupt files so the next attempt re-downloads them clean instead
             // of resuming from a poisoned offset.
             runCatching { files.forEach { deleteFile(it) } }
@@ -359,7 +359,7 @@ class DownloadWorker @AssistedInject constructor(
                 appInstaller.getPreferredInstaller(notifyOnFallback = true).install(download)
                 Result.success()
             } catch (exception: Exception) {
-                Log.e(TAG, "Failed to install ${download.packageName}", exception)
+                Log.e(TAG, "Failed to install ${download.packageName}: ${exception.javaClass.simpleName}")
                 onFailure(exception)
             }
         }
@@ -398,7 +398,7 @@ class DownloadWorker @AssistedInject constructor(
 
     private suspend fun onFailure(exception: Exception): Result {
         return withContext(NonCancellable) {
-            Log.i(TAG, "Job failed: ${download.packageName}", exception)
+            Log.i(TAG, "Job failed: ${download.packageName}: ${exception.javaClass.simpleName}")
 
             val cancelledByUser = isCancelledByUser()
 
@@ -441,8 +441,7 @@ class DownloadWorker @AssistedInject constructor(
                                 R.string.download_signing_key_rotated
                             )
 
-                            else -> exception.message?.takeIf { it.isNotBlank() }
-                                ?: context.getString(R.string.download_failed)
+                            else -> context.getString(R.string.download_failed)
                         }
                         notifyStatus(
                             status = DownloadStatus.FAILED,
@@ -452,7 +451,7 @@ class DownloadWorker @AssistedInject constructor(
                             InstallerEvent.Failed(
                                 packageName = download.packageName,
                                 error = userMessage,
-                                extra = exception.stackTraceToString()
+                                extra = exception.javaClass.simpleName
                             )
                         )
                     }
@@ -585,7 +584,7 @@ class DownloadWorker @AssistedInject constructor(
             try {
                 InstalledPatchBase.read(context, packageName)
             } catch (exception: Exception) {
-                Log.w(TAG, "Failed to read the installed copy of $packageName", exception)
+                Log.w(TAG, "Failed to read the installed copy of $packageName: ${exception.javaClass.simpleName}")
                 null
             }
         }
@@ -620,7 +619,7 @@ class DownloadWorker @AssistedInject constructor(
                         patch.baseSha1.equals(installedHash(installed, Algorithm.SHA1), true)
                 }
             } catch (exception: Exception) {
-                Log.w(TAG, "Failed to hash the installed ${file.name}", exception)
+                Log.w(TAG, "Failed to hash the installed ${file.name}: ${exception.javaClass.simpleName}")
                 false
             }
 
@@ -1065,7 +1064,7 @@ class DownloadWorker @AssistedInject constructor(
 
                 messageDigest.digest().toHexString() == expectedSha
             } catch (e: Exception) {
-                Log.e(TAG, "Failed to verify $file", e)
+                Log.e(TAG, "Failed to verify $file: ${e.javaClass.simpleName}")
                 false
             }
         }
@@ -1134,7 +1133,7 @@ class DownloadWorker @AssistedInject constructor(
                 }
                 storageManager.allocateBytes(uuid, requiredBytes)
             } catch (exception: IOException) {
-                Log.e(TAG, "Failed to allocate space for ${download.packageName}", exception)
+                Log.e(TAG, "Failed to allocate space for ${download.packageName}: ${exception.javaClass.simpleName}")
                 throw InsufficientStorageException()
             }
         } else if (dir.usableSpace < requiredBytes) {
