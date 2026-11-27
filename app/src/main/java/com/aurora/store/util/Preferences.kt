@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import com.aurora.extensions.isOneUI
 import com.aurora.store.BuildConfig
+import com.aurora.Constants
 
 object Preferences {
 
@@ -105,8 +106,13 @@ object Preferences {
         getPrefs(context).edit { remove(key) }
     }
 
+    private val secretKeys = setOf(
+        Constants.ACCOUNT_AAS_PLAIN, Constants.ACCOUNT_AUTH_PLAIN, PREFERENCE_AUTH_DATA
+    )
+
     fun putString(context: Context, key: String, value: String) {
-        getPrefs(context).edit { putString(key, value) }
+        val stored = if (key in secretKeys) CredentialCipher.encrypt(value, "pref:$key") else value
+        getPrefs(context).edit { putString(key, stored) }
     }
 
     fun putStringSet(context: Context, key: String, value: Set<String>) {
@@ -133,8 +139,10 @@ object Preferences {
         getPrefs(context).edit(true) { putBoolean(key, value) }
     }
 
-    fun getString(context: Context, key: String, default: String = ""): String =
-        getPrefs(context).getString(key, default).toString()
+    fun getString(context: Context, key: String, default: String = ""): String {
+        val stored = getPrefs(context).getString(key, null) ?: return default
+        return if (key in secretKeys) CredentialCipher.decrypt(stored, "pref:$key") else stored
+    }
 
     fun getStringSet(
         context: Context,

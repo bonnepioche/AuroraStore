@@ -20,6 +20,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.activity.compose.LocalActivity
+import android.view.WindowManager
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,6 +55,13 @@ fun AasTokenLoginScreen(
     viewModel: AuthViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    val window = LocalActivity.current?.window
+    DisposableEffect(window) {
+        val flag = WindowManager.LayoutParams.FLAG_SECURE
+        val wasSecure = window?.attributes?.flags?.and(flag) != 0
+        window?.addFlags(flag)
+        onDispose { if (!wasSecure) window?.clearFlags(flag) }
+    }
     val authState by viewModel.authState.collectAsStateWithLifecycle()
     var email by remember { mutableStateOf("") }
     var aasToken by remember { mutableStateOf("") }

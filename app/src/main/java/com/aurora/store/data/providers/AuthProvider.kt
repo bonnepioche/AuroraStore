@@ -164,8 +164,7 @@ class AuthProvider @Inject constructor(
             } catch (exception: SerializationException) {
                 Log.e(
                     TAG,
-                    "Stored session for ${account.id} is not a valid v4 session; treating as signed out",
-                    exception
+                    "Stored session is not a valid v4 session; treating as signed out"
                 )
                 null
             }
@@ -239,7 +238,7 @@ class AuthProvider @Inject constructor(
                     )
                 )
             } catch (exception: Exception) {
-                Log.e(TAG, "Failed to generate Session", exception)
+                Log.e(TAG, "Failed to generate Session: " + exception.javaClass.simpleName)
                 return@withContext Result.failure(exception)
             }
         }
@@ -270,7 +269,7 @@ class AuthProvider @Inject constructor(
                 ).copy(isDispensed = true)
                 return@withContext Result.success(session)
             } catch (exception: Exception) {
-                Log.e(TAG, "Failed to generate AuthData", exception)
+                Log.e(TAG, "Failed to generate AuthData: " + exception.javaClass.simpleName)
                 return@withContext Result.failure(exception)
             }
         }

@@ -80,7 +80,7 @@ class AuthViewModel @Inject constructor(
                 val token = tokenProvider.fetchAuthToken(email, oldToken, activity)
                 buildGoogleAuthData(email, token, TokenType.AUTH)
             } catch (exception: Exception) {
-                Log.e(TAG, "Failed to get authToken for Google login", exception)
+                Log.e(TAG, "Failed to get authToken for Google login" + ": " + exception.javaClass.simpleName)
                 _authState.value =
                     AuthState.Failed(context.getString(R.string.failed_to_generate_session))
                 onError()
@@ -101,7 +101,7 @@ class AuthViewModel @Inject constructor(
             } catch (exception: Exception) {
                 _authState.value =
                     AuthState.Failed(context.getString(R.string.failed_to_generate_session))
-                Log.e(TAG, "Failed to generate Session", exception)
+                Log.e(TAG, "Failed to generate Session" + ": " + exception.javaClass.simpleName)
             }
         }
     }
@@ -144,10 +144,10 @@ class AuthViewModel @Inject constructor(
                     AccountType.ANONYMOUS
                 )
             } catch (exception: Exception) {
-                Log.e(TAG, "Failed to generate Session", exception)
+                Log.e(TAG, "Failed to generate Session" + ": " + exception.javaClass.simpleName)
                 val message = when (exception) {
                     is UnknownHostException -> context.getString(R.string.check_connectivity)
-                    else -> exception.message.toString()
+                    else -> context.getString(R.string.failed_to_generate_session)
                 }
 
                 _authState.value = AuthState.Failed(message)
@@ -177,7 +177,7 @@ class AuthViewModel @Inject constructor(
                     AuroraApp.events.send(AuthEvent.GoogleLogin(false, "", ""))
                 }
             } catch (exception: Exception) {
-                Log.e(TAG, "Failed to build AuthData", exception)
+                Log.e(TAG, "Failed to build AuthData" + ": " + exception.javaClass.simpleName)
                 AuroraApp.events.send(
                     AuthEvent.GoogleLogin(
                         success = false,

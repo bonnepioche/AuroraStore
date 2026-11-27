@@ -12,27 +12,41 @@ import com.aurora.store.data.room.account.AppAccountBindingDao
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import com.aurora.store.util.CredentialCipher
 
 @Singleton
 class AccountRepository @Inject constructor(
     private val accountDao: AccountDao,
     private val bindingDao: AppAccountBindingDao
 ) {
-    val accounts: Flow<List<Account>> = accountDao.accounts()
-    val defaultAccount: Flow<Account?> = accountDao.observeDefault()
+    private fun Account.protect(): Account = copy(
+        aasToken = aasToken?.let { CredentialCipher.encrypt(it, "room:$id:aas") },
+        authToken = authToken?.let { CredentialCipher.encrypt(it, "room:$id:auth") },
+        authDataJson = authDataJson?.let { CredentialCipher.encrypt(it, "room:$id:session") }
+    )
 
-    suspend fun getAll(): List<Account> = accountDao.getAll()
+    private fun Account.unprotect(): Account = copy(
+        aasToken = aasToken?.let { CredentialCipher.decrypt(it, "room:$id:aas") },
+        authToken = authToken?.let { CredentialCipher.decrypt(it, "room:$id:auth") },
+        authDataJson = authDataJson?.let { CredentialCipher.decrypt(it, "room:$id:session") }
+    )
 
-    suspend fun getDefault(): Account? = accountDao.getDefault()
+    val accounts: Flow<List<Account>> = accountDao.accounts().map { rows -> rows.map { it.unprotect() } }
+    val defaultAccount: Flow<Account?> = accountDao.observeDefault().map { it?.unprotect() }
 
-    suspend fun getById(id: String): Account? = accountDao.getById(id)
+    suspend fun getAll(): List<Account> = accountDao.getAll().map { it.unprotect() }
+
+    suspend fun getDefault(): Account? = accountDao.getDefault()?.unprotect()
+
+    suspend fun getById(id: String): Account? = accountDao.getById(id)?.unprotect()
 
     /** Inserts/updates an account. Enforces the single-anonymous invariant. */
     suspend fun upsertAccount(account: Account) {
         if (account.isAnonymous) {
-            accountDao.upsert(account.copy(id = Account.ANONYMOUS_ID))
+            accountDao.upsert(account.copy(id = Account.ANONYMOUS_ID).protect())
         } else {
-            accountDao.upsert(account)
+            accountDao.upsert(account.protect())
         }
     }
 

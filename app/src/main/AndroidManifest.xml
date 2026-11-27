@@ -52,7 +52,7 @@
 
     <application
         android:name=".AuroraApp"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:banner="@drawable/ic_tv_banner"
         android:dataExtractionRules="@xml/backup_rules"
         android:enableOnBackInvokedCallback="true"

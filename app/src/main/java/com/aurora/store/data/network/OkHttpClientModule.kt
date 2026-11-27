@@ -70,8 +70,8 @@ object OkHttpClientModule {
         cache: Cache
     ): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient().newBuilder()
-            .cache(cache)
-            .addNetworkInterceptor(varyByAuthorizationInterceptor)
+            // Disable persistent HTTP caching in the credential-bearing fork.
+            .cache(null)
             .proxy(proxy)
             .connectTimeout(25, TimeUnit.SECONDS)
             .readTimeout(25, TimeUnit.SECONDS)
