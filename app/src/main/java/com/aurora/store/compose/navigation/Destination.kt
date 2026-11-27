@@ -33,6 +33,7 @@ sealed class Destination {
 
     data object Accounts : Destination()
     data class GoogleLogin(val addAccount: Boolean = false) : Destination()
+    data class AasTokenLogin(val addAccount: Boolean = false) : Destination()
     data object About : Destination()
     data object Favourite : Destination()
     data object Spoof : Destination()
