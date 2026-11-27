@@ -771,4 +771,16 @@
     <string name="aas_import_action">Import apkeep.ini</string>
     <string name="aas_import_warning">Choose a local file. Delete the transferred plaintext file after import.</string>
     <string name="aas_import_failed">Could not read the Google section of apkeep.ini.</string>
+    <string name="aas_update_title">Aurora AAS updates</string>
+    <string name="aas_update_explanation">Checks only the Bonnepioche GitHub repository. Downloads are verified against the installed package and signing certificate.</string>
+    <string name="aas_update_check">Check for Aurora AAS updates</string>
+    <string name="aas_update_checking">Checking GitHub…</string>
+    <string name="aas_update_none">No newer published Aurora AAS release.</string>
+    <string name="aas_update_found">Available: %1$s (build %2$d)</string>
+    <string name="aas_update_downloading">Downloading and verifying…</string>
+    <string name="aas_update_verified">APK hash, package, version and signing certificate verified. Android will verify the signature during installation.</string>
+    <string name="aas_update_download">Download and verify</string>
+    <string name="aas_update_install">Install update</string>
+    <string name="aas_update_permission">Allow installation from this source, then return and tap Install update again.</string>
+    <string name="aas_update_error">Update check or verification failed. No APK was installed.</string>
 </resources>

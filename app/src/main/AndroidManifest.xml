@@ -150,6 +150,15 @@
                 android:resource="@xml/paths" />
         </provider>
 
+        <provider
+            android:name="com.aurora.store.data.update.AasUpdateFileProvider"
+            android:authorities="${applicationId}.aasUpdateProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/aas_update_paths" />
+        </provider>
+
         <!-- Shizuku (Installer) -->
         <provider
             android:name="rikka.shizuku.ShizukuProvider"

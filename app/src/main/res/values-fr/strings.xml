@@ -682,4 +682,16 @@
     <string name="aas_import_action">Importer apkeep.ini</string>
     <string name="aas_import_warning">Choisissez un fichier local. Supprimez le fichier en clair transféré après importation.</string>
     <string name="aas_import_failed">Impossible de lire la section Google du fichier apkeep.ini.</string>
+    <string name="aas_update_title">Mises à jour Aurora AAS</string>
+    <string name="aas_update_explanation">Consulte uniquement le dépôt GitHub Bonnepioche. Vérifie le paquet et le certificat de signature.</string>
+    <string name="aas_update_check">Rechercher une mise à jour Aurora AAS</string>
+    <string name="aas_update_checking">Recherche sur GitHub…</string>
+    <string name="aas_update_none">Aucune nouvelle version Aurora AAS publiée.</string>
+    <string name="aas_update_found">Disponible : %1$s (version %2$d)</string>
+    <string name="aas_update_downloading">Téléchargement et vérification…</string>
+    <string name="aas_update_verified">Empreinte, paquet, version et certificat vérifiés. Android vérifiera la signature pendant la mise à jour.</string>
+    <string name="aas_update_download">Télécharger et vérifier</string>
+    <string name="aas_update_install">Installer la mise à jour</string>
+    <string name="aas_update_permission">Autorisez les installations depuis cette source, puis revenez et appuyez de nouveau sur Installer la mise à jour.</string>
+    <string name="aas_update_error">Échec de la recherche ou de la vérification. Aucun APK installé.</string>
 </resources>

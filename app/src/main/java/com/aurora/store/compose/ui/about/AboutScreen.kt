@@ -40,6 +40,7 @@ import coil3.request.ImageRequest
 import com.aurora.extensions.browse
 import com.aurora.extensions.copyToClipBoard
 import com.aurora.extensions.viewExternal
+import com.aurora.store.BuildConfig
 import com.aurora.store.BuildConfig.VERSION_CODE
 import com.aurora.store.BuildConfig.VERSION_NAME
 import com.aurora.store.R
@@ -111,6 +112,7 @@ private fun ScreenContent(onAboutAurora: () -> Unit = {}) {
                     BrandHeader()
                 }
             }
+            item { AasUpdatePanel() }
             items(items = links, key = { item -> item.id }) { link ->
                 LinkListItem(
                     link = link,
@@ -148,7 +150,7 @@ private fun BrandHeader() {
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(R.mipmap.ic_launcher)
+                .data(R.drawable.aas_launcher)
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
@@ -168,6 +170,7 @@ private fun BrandHeader() {
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
+        Text(text = "Git: " + BuildConfig.AAS_COMMIT, style = MaterialTheme.typography.bodySmall)
         Text(
             text = stringResource(R.string.made_with_love, String(Character.toChars(0x2764))),
             style = MaterialTheme.typography.bodyMedium,

@@ -34,5 +34,5 @@ printf '%s\n' $report | string match -q "*certificate SHA-256 digest: $cert"; or
     exit 1
 end
 "$sdk/zipalign" -c -P 16 4 "$work/signed.apk"; or exit 1
-cp --no-clobber -- "$work/signed.apk" "$output"; or exit 1
+cp --update=none-fail -- "$work/signed.apk" "$output"; or exit 1
 sha256sum -- "$output"

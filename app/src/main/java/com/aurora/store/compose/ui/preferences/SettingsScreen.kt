@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewWrapper
 import com.aurora.store.R
+import com.aurora.store.compose.ui.about.AasUpdatePanel
 import com.aurora.store.compose.composable.TopAppBar
 import com.aurora.store.compose.navigation.Destination
 import com.aurora.store.compose.preview.ThemePreviewProvider
@@ -44,6 +45,7 @@ private fun ScreenContent(onNavigateTo: (Destination) -> Unit = {}) {
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
+            item { AasUpdatePanel() }
             item {
                 ListItem(
                     modifier = Modifier.clickable {
