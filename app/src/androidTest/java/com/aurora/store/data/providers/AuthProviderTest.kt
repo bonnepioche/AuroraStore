@@ -38,7 +38,7 @@ class AuthProviderTest {
     @Before
     fun setup() {
         hiltAndroidRule.inject()
-        spoofProvider.removeSpoofLocale()
+        spoofProvider.setLanguages(listOf(Locale.US))
         spoofProvider.removeSpoofDeviceProperties()
         devices = spoofProvider.availableSpoofDeviceProperties
         assertThat(devices.size).isAtLeast(2)
@@ -46,7 +46,7 @@ class AuthProviderTest {
 
     @After
     fun tearDown() {
-        spoofProvider.removeSpoofLocale()
+        spoofProvider.setLanguages(emptyList())
         spoofProvider.removeSpoofDeviceProperties()
     }
 
@@ -58,7 +58,7 @@ class AuthProviderTest {
         spoofProvider.setSpoofDeviceProperties(devices.first())
 
         assertThat(
-            authProvider.matchesActiveSpoof(deviceFor(devices.first()), Locale.getDefault())
+            authProvider.matchesActiveSpoof(deviceFor(devices.first()), Locale.US)
         ).isTrue()
     }
 
@@ -67,27 +67,27 @@ class AuthProviderTest {
         spoofProvider.setSpoofDeviceProperties(devices.first())
 
         assertThat(
-            authProvider.matchesActiveSpoof(deviceFor(devices.last()), Locale.getDefault())
+            authProvider.matchesActiveSpoof(deviceFor(devices.last()), Locale.US)
         ).isFalse()
     }
 
     @Test
     fun sessionBuiltBeforeTheSpoofWasEnabledIsRejected() {
         val native = deviceFor(spoofProvider.deviceProperties)
-        assertThat(authProvider.matchesActiveSpoof(native, Locale.getDefault())).isTrue()
+        assertThat(authProvider.matchesActiveSpoof(native, Locale.US)).isTrue()
 
         spoofProvider.setSpoofDeviceProperties(devices.first())
 
-        assertThat(authProvider.matchesActiveSpoof(native, Locale.getDefault())).isFalse()
+        assertThat(authProvider.matchesActiveSpoof(native, Locale.US)).isFalse()
     }
 
     @Test
     fun sessionBuiltForAnotherLocaleIsRejected() {
         spoofProvider.setSpoofDeviceProperties(devices.first())
-        spoofProvider.setSpoofLocale(Locale.JAPAN)
+        spoofProvider.setLanguages(listOf(Locale.JAPAN))
 
         assertThat(
-            authProvider.matchesActiveSpoof(deviceFor(devices.first()), Locale.getDefault())
+            authProvider.matchesActiveSpoof(deviceFor(devices.first()), Locale.US)
         ).isFalse()
         assertThat(
             authProvider.matchesActiveSpoof(deviceFor(devices.first()), Locale.JAPAN)
@@ -96,6 +96,6 @@ class AuthProviderTest {
 
     @Test
     fun sessionWithoutDeviceInfoIsRejected() {
-        assertThat(authProvider.matchesActiveSpoof(null, Locale.getDefault())).isFalse()
+        assertThat(authProvider.matchesActiveSpoof(null, Locale.US)).isFalse()
     }
 }

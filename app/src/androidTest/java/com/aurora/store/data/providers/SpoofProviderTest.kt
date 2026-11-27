@@ -35,22 +35,23 @@ class SpoofProviderTest {
 
     @After
     fun tearDown() {
-        spoofProvider.removeSpoofLocale()
+        spoofProvider.setLanguages(emptyList())
         spoofProvider.removeSpoofDeviceProperties()
     }
 
     @Test
     fun testSpoofingDeviceLocale() {
-        assertThat(spoofProvider.isLocaleSpoofEnabled).isFalse()
+        spoofProvider.setLanguages(listOf(Locale.US))
+        assertThat(spoofProvider.locale).isEqualTo(Locale.US)
 
-        spoofProvider.setSpoofLocale(Locale.JAPAN)
-        assertThat(spoofProvider.isLocaleSpoofEnabled).isTrue()
+        spoofProvider.setLanguages(listOf(Locale.JAPAN))
+        assertThat(spoofProvider.languages).containsExactly(Locale.JAPAN)
         assertThat(spoofProvider.locale == Locale.JAPAN).isTrue()
     }
 
     @Test
     fun testSpoofingDeviceLocaleDropsRegionUnknownToPlay() {
-        spoofProvider.setSpoofLocale(Locale.forLanguageTag("es-419"))
+        spoofProvider.setLanguages(listOf(Locale.forLanguageTag("es-419")))
         assertThat(spoofProvider.locale).isEqualTo(Locale.forLanguageTag("es"))
     }
 
