@@ -32,7 +32,7 @@ jobs:
       - name: Build Vanilla release APK
         run: |
           chmod +x ./gradlew
-          ./gradlew :app:assembleVanillaRelease --no-daemon --stacktrace
+          ./gradlew :app:testVanillaReleaseUnitTest :app:assembleVanillaRelease --no-daemon --stacktrace
       - name: Upload APK
         if: success()
         uses: actions/upload-artifact@v4

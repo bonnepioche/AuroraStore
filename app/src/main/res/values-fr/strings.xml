@@ -679,4 +679,7 @@
         <item quantity="many">%1$d mises à jour demandant de nouvelles autorisations ont été ignorées</item>
         <item quantity="other">%1$d mises à jour demandant de nouvelles autorisations ont été ignorées</item>
     </plurals>
+    <string name="aas_import_action">Importer apkeep.ini</string>
+    <string name="aas_import_warning">Choisissez un fichier local. Supprimez le fichier en clair transféré après importation.</string>
+    <string name="aas_import_failed">Impossible de lire la section Google du fichier apkeep.ini.</string>
 </resources>

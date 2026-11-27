@@ -5,6 +5,17 @@
 
 package com.aurora.store.compose.ui.accounts
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.runtime.rememberCoroutineScope
+import com.aurora.store.util.ApkeepConfig
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -68,6 +79,34 @@ fun AasTokenLoginScreen(
     var submitting by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
 
+    var importing by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val importer = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null && !submitting && !importing) {
+            importing = true
+            aasToken = ""
+            error = null
+            scope.launch {
+                try {
+                    val credentials = withContext(Dispatchers.IO) {
+                        require(uri.scheme == "content")
+                        requireNotNull(context.contentResolver.openInputStream(uri)).use {
+                            ApkeepConfig.read(it)
+                        }
+                    }
+                    email = credentials.email
+                    aasToken = credentials.token
+                } catch (cancelled: CancellationException) {
+                    throw cancelled
+                } catch (_: Exception) {
+                    error = context.getString(R.string.aas_import_failed)
+                } finally {
+                    importing = false
+                }
+            }
+        }
+    }
+
     LaunchedEffect(addAccount) {
         if (addAccount) {
             viewModel.accountAdded.collect { failure ->
@@ -120,18 +159,27 @@ fun AasTokenLoginScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(20.dp),
+                .padding(20.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             Text(
                 text = stringResource(R.string.aas_login_helper),
                 style = MaterialTheme.typography.bodyMedium
             )
+            OutlinedButton(
+                onClick = { importer.launch("*/*") },
+                enabled = !submitting && !importing,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(stringResource(R.string.aas_import_action))
+            }
+            Text(stringResource(R.string.aas_import_warning), style = MaterialTheme.typography.bodySmall)
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it; error = null },
                 label = { Text(stringResource(R.string.aas_login_email)) },
-                enabled = !submitting,
+                enabled = !submitting && !importing,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
@@ -140,7 +188,7 @@ fun AasTokenLoginScreen(
                 value = aasToken,
                 onValueChange = { aasToken = it; error = null },
                 label = { Text(stringResource(R.string.aas_login_token)) },
-                enabled = !submitting,
+                enabled = !submitting && !importing,
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 singleLine = true,
@@ -171,7 +219,7 @@ fun AasTokenLoginScreen(
                         }
                     }
                 },
-                enabled = !submitting,
+                enabled = !submitting && !importing,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 if (submitting) {

@@ -768,4 +768,7 @@
 
     <!-- Network Dialog -->
     <string name="action_check">"Check"</string>
+    <string name="aas_import_action">Import apkeep.ini</string>
+    <string name="aas_import_warning">Choose a local file. Delete the transferred plaintext file after import.</string>
+    <string name="aas_import_failed">Could not read the Google section of apkeep.ini.</string>
 </resources>
