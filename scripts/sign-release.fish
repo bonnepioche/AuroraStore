@@ -34,5 +34,9 @@ printf '%s\n' $report | string match -q "*certificate SHA-256 digest: $cert"; or
     exit 1
 end
 "$sdk/zipalign" -c -P 16 4 "$work/signed.apk"; or exit 1
-cp --update=none-fail -- "$work/signed.apk" "$output"; or exit 1
+cp --update=none -- "$work/signed.apk" "$output"; or exit 1
+cmp -s -- "$work/signed.apk" "$output"; or begin
+    echo "Output differs from the verified signed APK" >&2
+    exit 1
+end
 sha256sum -- "$output"
