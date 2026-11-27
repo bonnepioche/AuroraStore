@@ -5,7 +5,6 @@
 
 package com.aurora.store.compose.ui.accounts
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,6 +44,7 @@ import com.aurora.store.viewmodel.auth.AuthViewModel
  * Direct AAS-token sign-in. Never store the input in saved UI state or log it.
  * The existing AuthProvider handles session creation and persistence.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AasTokenLoginScreen(
     onNavigateTo: (Destination) -> Unit,
