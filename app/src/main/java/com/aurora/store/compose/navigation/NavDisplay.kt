@@ -38,6 +38,7 @@ import com.aurora.store.R
 import com.aurora.store.compose.ui.about.AboutScreen
 import com.aurora.store.compose.ui.accounts.AccountsScreen
 import com.aurora.store.compose.ui.accounts.GoogleLoginScreen
+import com.aurora.store.compose.ui.accounts.AasTokenLoginScreen
 import com.aurora.store.compose.ui.blacklist.BlacklistScreen
 import com.aurora.store.compose.ui.commons.CategoryBrowseScreen
 import com.aurora.store.compose.ui.commons.ExpandedStreamBrowseScreen
@@ -199,6 +200,10 @@ fun NavDisplay(startDestination: NavKey) {
                 authProvider().clearSessionRejections()
                 backstack.add(Screen.GoogleLogin(destination.addAccount))
             }
+            is Destination.AasTokenLogin -> {
+                authProvider().clearSessionRejections()
+                backstack.add(Screen.AasTokenLogin(destination.addAccount))
+            }
 
             Destination.Search -> backstack.add(Screen.Search)
             Destination.Downloads -> backstack.add(Screen.Downloads)
@@ -338,6 +343,13 @@ fun NavDisplay(startDestination: NavKey) {
 
             entry<Screen.GoogleLogin> { screen ->
                 GoogleLoginScreen(
+                    addAccount = screen.addAccount,
+                    onNavigateTo = ::navigate
+                )
+            }
+
+            entry<Screen.AasTokenLogin> { screen ->
+                AasTokenLoginScreen(
                     addAccount = screen.addAccount,
                     onNavigateTo = ::navigate
                 )
