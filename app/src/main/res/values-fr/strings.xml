@@ -595,7 +595,7 @@
     <string name="aas_login_submit">Se connecter à Google Play</string>
     <string name="aas_login_helper">Saisissez le jeton AAS déjà obtenu avec apkeep. Gardez-le confidentiel : il donne accès à votre session Google.</string>
     <string name="aas_login_invalid">Saisissez une adresse e-mail valide et un jeton AAS non vide.</string>
-    <string name="aas_login_failed">Google Play a refusé le jeton ou n'a pas pu établir de session. Vérifiez le compte, le profil matériel et la connexion.</string>
+    <string name="aas_login_failed">Google Play a refusé le jeton ou n\'a pas pu établir de session. Vérifiez le compte, le profil matériel et la connexion.</string>
     <string name="account_add_google">Se connecter avec Google</string>
     <string name="account_add_anonymous">Ajouter un compte anonyme</string>
     <string name="account_set_default_title">Changer de compte par défaut ?</string>
