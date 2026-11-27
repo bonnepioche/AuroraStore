@@ -43,7 +43,7 @@ open class AuthWorker @AssistedInject constructor(
         val isValid = try {
             authProvider.isSavedAuthDataValid()
         } catch (exception: IOException) {
-            Log.e(TAG, "Couldn't reach Play to validate AuthData", exception)
+            Log.e(TAG, "Couldn't reach Play to validate AuthData" + ": " + exception.javaClass.simpleName)
             return Result.failure()
         }
 
@@ -103,7 +103,7 @@ open class AuthWorker @AssistedInject constructor(
             Log.i(TAG, "Refreshed AuthData successfully")
             return Result.success()
         } catch (exception: Exception) {
-            Log.e(TAG, "Failed to refresh authData!", exception)
+            Log.e(TAG, "Failed to refresh authData!" + ": " + exception.javaClass.simpleName)
             return Result.failure()
         }
     }

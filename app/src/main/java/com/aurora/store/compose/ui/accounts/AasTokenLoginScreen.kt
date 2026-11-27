@@ -58,7 +58,7 @@ fun AasTokenLoginScreen(
     val window = LocalActivity.current?.window
     DisposableEffect(window) {
         val flag = WindowManager.LayoutParams.FLAG_SECURE
-        val wasSecure = window?.attributes?.flags?.and(flag) != 0
+        val wasSecure = ((window?.attributes?.flags ?: 0) and flag) != 0
         window?.addFlags(flag)
         onDispose { if (!wasSecure) window?.clearFlags(flag) }
     }

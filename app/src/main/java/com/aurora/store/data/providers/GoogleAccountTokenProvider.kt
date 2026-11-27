@@ -48,7 +48,7 @@ class GoogleAccountTokenProvider @Inject constructor(
             .map { it.name }
             .distinct()
     } catch (e: Exception) {
-        Log.e(TAG, "Failed to enumerate system Google accounts", e)
+        Log.e(TAG, "Failed to enumerate system Google accounts" + ": " + e.javaClass.simpleName)
         emptyList()
     }
 
@@ -134,7 +134,7 @@ class GoogleAccountTokenProvider @Inject constructor(
                 Handler(Looper.getMainLooper())
             )
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to fetch auth token", e)
+            Log.e(TAG, "Failed to fetch auth token" + ": " + e.javaClass.simpleName)
             continuation.resumeWithException(e)
         }
     }
