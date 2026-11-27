@@ -1,0 +1,29 @@
+name: AAS upstream integration
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 5 * * *'
+permissions:
+  contents: read
+concurrency:
+  group: aas-upstream-integration
+  cancel-in-progress: false
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/aas-v0.5
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v4
+        with:
+          packages: ''
+      - run: sdkmanager --install "platforms;android-37.0" "build-tools;37.0.0"
+      - run: bash scripts/check-upstream.sh

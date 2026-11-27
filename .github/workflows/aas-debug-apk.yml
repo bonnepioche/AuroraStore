@@ -5,6 +5,7 @@ on:
     branches:
       - feature/aas-token-login
       - feature/aas-v0.4
+      - feature/aas-v0.5
   workflow_dispatch:
 
 permissions:
@@ -53,6 +54,6 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: AuroraStore-AAS-v0.4-unsigned
+          name: AuroraStore-AAS-v0.5-unsigned
           path: app/build/outputs/apk/vanilla/release/*-unsigned.apk
           if-no-files-found: error
