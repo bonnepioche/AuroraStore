@@ -31,7 +31,7 @@ jobs:
           packages: ''
       - name: Install Android SDK Platform 37
         run: |
-          sdkmanager --install "platforms;android-37" "build-tools;37.0.0"
+          sdkmanager --install "platforms;android-37.0" "build-tools;37.0.0"
       - name: Build Vanilla debug APK
         run: |
           chmod +x ./gradlew
