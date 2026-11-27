@@ -59,6 +59,9 @@ sealed class Screen : NavKey, Parcelable {
     data class GoogleLogin(val addAccount: Boolean = false) : Screen()
 
     @Serializable
+    data class AasTokenLogin(val addAccount: Boolean = false) : Screen()
+
+    @Serializable
     data object About : Screen()
 
     @Serializable
